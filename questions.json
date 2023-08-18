@@ -1,0 +1,162 @@
+{
+    "1": {
+        "question": "If a train travels 600 km at a constant speed of 120 km/h, how many hours will it take to complete the journey?",
+        "option1": "4",
+        "option2": "5",
+        "option3": "6",
+        "option4": "7",
+        "correctAnswer": "option5"
+    },
+    "2": {
+        "question": "The sum of the interior angles of a polygon with 'n' sides is 1620 degrees. What is the value of 'n'?",
+        "option1": "8",
+        "option2": "9",
+        "option3": "10",
+        "option4": "11",
+        "correctAnswer": "option3"
+    },
+    "3": {
+        "question": "If the radius of a circle is increased by 20%, by what percentage does its area increase?",
+        "option1": "20%",
+        "option2": "44%",
+        "option3": "40%",
+        "option4": "42%",
+        "correctAnswer": "option4"
+    },
+    "4": {
+        "question": "A factory produces 4800 units of a product in 6 days. How many units will it produce in 12 days at the same rate?",
+        "option1": "9600",
+        "option2": "960",
+        "option3": "1920",
+        "option4": "480",
+        "correctAnswer": "option1"
+    },
+    "5": {
+        "question": "If log(base 3) x = 4, what is the value of x?",
+        "option1": "27",
+        "option2": "81",
+        "option3": "12",
+        "option4": "64",
+        "correctAnswer": "option2"
+    },
+    "6": {
+        "question": "The sum of the squares of two consecutive positive integers is 365. What are the two integers?",
+        "option1": "12, 13",
+        "option2": "13, 14",
+        "option3": "15, 16",
+        "option4": "16, 17",
+        "correctAnswer": "option1"
+    },
+    "7": {
+        "question": "If a man sells a shirt for $120, making a profit of 20%, what is the cost price of the shirt?",
+        "option1": "$100",
+        "option2": "$96",
+        "option3": "$90",
+        "option4": "$110",
+        "correctAnswer": "option2"
+    },
+    "8": {
+        "question": "If 3x + 5 = 14, what is the value of x?",
+        "option1": "3",
+        "option2": "4",
+        "option3": "5",
+        "option4": "6",
+        "correctAnswer": "option1"
+    },
+    "9": {
+        "question": "If the ratio of the ages of two people is 5:8 and the sum of their ages is 65 years, what is the age of the older person?",
+        "option1": "32 years",
+        "option2": "40 years",
+        "option3": "48 years",
+        "option4": "50 years",
+        "correctAnswer": "option3"
+    },
+    "10": {
+        "question": "A car covers a distance of 240 km in 4 hours. What is its average speed?",
+        "option1": "50 km/h",
+        "option2": "60 km/h",
+        "option3": "70 km/h",
+        "option4": "80 km/h",
+        "correctAnswer": "option2"
+    },
+    "11": {
+        "question": "If 5x - 3 = 12, what is the value of x?",
+        "option1": "3",
+        "option2": "5",
+        "option3": "6",
+        "option4": "9",
+        "correctAnswer": "option3"
+    },
+    "12": {
+        "question": "A container holds 8 liters of milk. If 2 liters of milk are poured out and replaced with water, what is the final milk-to-water ratio?",
+        "option1": "4:1",
+        "option2": "3:2",
+        "option3": "2:3",
+        "option4": "5:1",
+        "correctAnswer": "option2"
+    },
+    "13": {
+        "question": "If a number is increased by 25% and then decreased by 20%, what is the net percentage change?",
+        "option1": "5%",
+        "option2": "4%",
+        "option3": "3%",
+        "option4": "1%",
+        "correctAnswer": "option3"
+    },
+    "14": {
+        "question": "A man sells an item for $180, making a loss of 10%. What was the cost price of the item?",
+        "option1": "$200",
+        "option2": "$210",
+        "option3": "$220",
+        "option4": "$190",
+        "correctAnswer": "option2"
+    },
+    "15": {
+        "question": "If 2x + 3 = 11, what is the value of x?",
+        "option1": "3",
+        "option2": "4",
+        "option3": "5",
+        "option4": "6",
+        "correctAnswer": "option4"
+    },
+    "16": {
+        "question": "The average of five consecutive even numbers is 24. What is the largest of these numbers?",
+        "option1": "26",
+        "option2": "28",
+        "option3": "30",
+        "option4": "32",
+        "correctAnswer": "option3"
+    },
+    "17": {
+        "question": "A rectangular garden is 20 meters long and 15 meters wide. What is the area of the garden?",
+        "option1": "300 square meters",
+        "option2": "250 square meters",
+        "option3": "400 square meters",
+        "option4": "350 square meters",
+        "correctAnswer": "option1"
+    },
+    "18": {
+        "question": "If the sides of a triangle are in the ratio 3:4:5 and the perimeter is 72 cm, what is the length of the shortest side?",
+        "option1": "9 cm",
+        "option2": "12 cm",
+        "option3": "15 cm",
+        "option4": "18 cm",
+        "correctAnswer": "option1"
+    },
+    "19": {
+        "question": "If log(base 2) x = 6, what is the value of x?",
+        "option1": "8",
+        "option2": "16",
+        "option3": "32",
+        "option4": "64",
+        "correctAnswer": "option4"
+    },
+    "20": {
+        "question": "A train travels 480 km at a certain speed. If the speed is increased by 10 km/h, the same distance is covered in 4 hours less. What is the original speed of the train?",
+        "option1": "60 km/h",
+        "option2": "70 km/h",
+        "option3": "80 km/h",
+        "option4": "90 km/h",
+        "correctAnswer": "option2"
+    }
+}

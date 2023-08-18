@@ -127,10 +127,6 @@ body {
     cursor: pointer;
 }
 
-p {
-    margin: 0px;
-    font-weight: bold;
-}
 
 .question_navigator {
     box-sizing: border-box;
@@ -259,7 +255,7 @@ p {
     border: 2px solid darkblue;
 }
 
-.question_access>.not_visited {
+.question_access>.not_answered {
     background-color: darkgray;
     border: 2px solid gray;
 }

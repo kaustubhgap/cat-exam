@@ -46,45 +46,45 @@
         <div class="small_question">
             <div class="question_area">fakjsdhkjf</div>
             <div class="answer_area">
-                <div class="options" data-state="">
+                <div class="options" name="options" id="option1">
                     <!-- <div> -->
-                    <p>A) Option 1</p>
+                    A) Option 1
                     <!-- </div> -->
                 </div>
-                <div class="options" data-state="">
+                <div class="options" name="options" id="option2">
                     <!-- <div> -->
-                    <p>B) Option 2</p>
+                    B) Option 2
                     <!-- </div> -->
                 </div>
-                <div class="options" data-state="">
+                <div class="options" name="options" id="option3">
                     <!-- <div> -->
-                    <p>C) Option 3</p>
+                    C) Option 3
                     <!-- </div> -->
                 </div>
-                <div class="options" data-state="">
+                <div class="options" name="options" id="option4">
                     <!-- <div> -->
-                    <p>D) Option 4</p>
+                    D) Option 4
                     <!-- </div> -->
                 </div>
             </div>
 
             <div class="question_navigator">
-                <div class="navigation_button" style="border: 2px solid brown;">Previous</div>
-                <div class="navigation_button">Clear</div>
-                <div class="navigation_button" style="border: 2px solid green;">Next</div>
-                <div class="navigation_button" style="border: 2px solid blue;">Review</div>
+                <div class="navigation_button" id="previous" style="border: 2px solid brown;">Previous</div>
+                <div class="navigation_button" id="clear">Clear</div>
+                <div class="navigation_button" id="next" style="border: 2px solid green;">Next</div>
+                <div class="navigation_button" id="review" style="border: 2px solid blue;">Review</div>
             </div>
         </div>
 
         <div class="right">
             <div class="question_counter">
                 <div class="counter">
-                    <div class="number"
+                    <div class="number" id="answered"
                         style="background-color:green; border:2px solid darkolivegreen; text-align: center; vertical-align: middle; line-height: 4.3vh;"">12</div>
                     <div style=" top:1.8vh; left:6vh; text-align: left; font-weight:bold;">Answered</div>
                 </div>
                 <div class="counter">
-                    <div class="number"
+                    <div class="number" id="marked"
                         style="background-color: blueviolet; border:2px solid darkblue; text-align: center; vertical-align: middle; line-height: 4.3vh;">
                         5</div>
                     <div
@@ -93,19 +93,19 @@
                         Review</div>
                 </div>
                 <div class="counter">
-                    <div class="number"
+                    <div class="number" id="not_answered"
                         style="background-color:palevioletred; border:2px solid rgb(201, 83, 123); text-align: center; vertical-align: middle; line-height: 4.3vh;"">7</div>
                     <div style=" top:1.8vh; left:6vh; text-align: left; font-weight:bold">Not Answered</div>
                 </div>
                 <div class="counter">
-                    <div class="number"
+                    <div class="number" id="not_visited"
                         style="background-color:gray; border:2px solid darkslategrey; text-align: center; vertical-align: middle; line-height: 4.3vh;"">2</div>
                     <div style=" top:1.8vh; left:6vh; text-align: left; font-weight:bold">Not Visisted</div>
                 </div>
             </div>
 
             <div class="question_access" id="question_access">
-                <div class="current_question">1</div>
+                <!-- <div class="current_question">1</div>
                 <div>2</div>
                 <div class="answered">3</div>
                 <div>4</div>
@@ -131,7 +131,8 @@
                 <div class="answered">9</div>
                 <div class="not_visited">10</div>
                 <div class="answered">11</div>
-                <div class="not_visited">12</div>
+                <div class="not_visited">12</div> -->
+                <!-- <div class="not_answered">11</div> -->
             </div>
 
         </div>
@@ -140,7 +141,11 @@
 </body>
 
 <script>
+
+
+
     exam_sections = document.getElementsByName('exam_section');
+    var current_answered = false;
 
     function select_exam_section(ele) {
         for (var i of exam_sections) {
@@ -148,30 +153,6 @@
         }
         console.log(ele.srcElement.classList.add('topic_active'));
     }
-
-    for (var i of exam_sections) {
-        i.addEventListener('click', select_exam_section);
-    }
-
-    question_buttons = document.getElementById('question_access').children;
-
-    function select_current_question(ele) {
-        for (var i of question_buttons) {
-            // i.primaryClass = i.classList;
-            i.classList = i.primaryClass;
-            i.classList.remove('current_question');
-        }
-        ele.srcElement.classList = [];
-        console.log(ele.srcElement.classList.add('current_question'));
-    }
-
-    for (var i of question_buttons) {
-        i.primaryClass = [...i.classList];
-        i.addEventListener('click', select_current_question);
-    }
-
-
-    navigation_buttons = document.getElementsByClassName('navigation_button');
 
     function hover_transition(ele) {
         console.log(ele);
@@ -188,11 +169,377 @@
         element.style.backgroundColor = "White";
     }
 
+
+    function select_current_question(ele) {
+        for (var i of document.getElementById("question_access").children) {
+            // i.primaryClass = i.classList;
+            i.classList = i.primaryClass;
+            i.classList.remove('current_question');
+        }
+        ele.srcElement.classList = [];
+        console.log(ele.srcElement.classList.add('current_question'));
+        if (ele.srcElement.answered == false) {
+            ele.srcElement.primaryClass = ['not_answered'];
+        }
+        else {
+            ele.srcElement.primaryClass = [ele.srcElement.classList];
+        }
+        console.log(ele.srcElement);
+    }
+
+
+    function render_questions(ele) {
+        let section_name = ele.srcElement.textContent;
+        console.log(section_name);
+        let questions_section = questions;
+        var question_navigator = document.getElementById("question_access");
+        question_navigator.innerHTML = "";
+        console.log(question_navigator);
+        for (let i of Object.keys(questions_section)) {
+            let question_box_navigator = document.createElement('div');
+            question_box_navigator.setAttribute("id", i);
+            question_box_navigator.section = section_name;
+            question_box_navigator.visited = false;
+            question_box_navigator.marked = false;
+            question_box_navigator.answered = false;
+            question_box_navigator.addEventListener("click", select_current_question);
+            question_box_navigator.addEventListener("click", display_question);
+            question_box_navigator.innerHTML = i;
+            question_navigator.appendChild(question_box_navigator);
+        }
+    }
+
+
+    function display_question(ele) {
+        question_number = ele.srcElement.getAttribute("id");
+        console.log(question_number);
+        console.log(questions[question_number]);
+        question = questions[question_number];
+        document.getElementById("option1").innerHTML = "A) " + question["option1"];
+        document.getElementById("option1").style.backgroundColor = "White";
+        document.getElementById("option1").style.color = "Black";
+        document.getElementById("option1").ele = ele.srcElement;
+        document.getElementById("option1").style.fontWeight = "bold";
+        document.getElementById("option2").innerHTML = "B) " + question["option2"];
+        document.getElementById("option2").style.backgroundColor = "White";
+        document.getElementById("option2").style.color = "Black";
+        document.getElementById("option2").style.fontWeight = "bold";
+        document.getElementById("option2").ele = ele.srcElement;
+        document.getElementById("option3").innerHTML = "C) " + question["option3"];
+        document.getElementById("option3").style.backgroundColor = "White";
+        document.getElementById("option3").style.color = "Black";
+        document.getElementById("option3").style.fontWeight = "bold";
+        document.getElementById("option3").ele = ele.srcElement;
+        document.getElementById("option4").innerHTML = "D) " + question["option4"];
+        document.getElementById("option4").style.backgroundColor = "White";
+        document.getElementById("option4").style.color = "Black";
+        document.getElementById("option4").style.fontWeight = "bold";
+        document.getElementById("option4").ele = ele.srcElement;
+
+        document.getElementById("clear").ele = ele.srcElement;
+        document.getElementById("next").ele = ele.srcElement;
+        document.getElementById("previous").ele = ele.srcElement;
+        document.getElementById("review").ele = ele.srcElement;
+
+        if (ele.srcElement.visited == false) {
+            questions_counter_numbers[ele.srcElement.section]['not_visited'] -= 1;
+            questions_counter_numbers[ele.srcElement.section]['not_answered'] += 1;
+        }
+
+
+    }
+
+    function select_answer(ele) {
+        let option_div = ele.target;
+        console.log(option_div.ele);
+        for (let i of document.getElementsByName("options")) {
+            i.style.backgroundColor = "White";
+            i.style.color = "Black";
+        }
+        option_div.style.backgroundColor = "Green";
+        option_div.style.color = "White";
+        if (option_div.ele.answered == false) {
+            console.log("here");
+            questions_counter_numbers[option_div.ele.section]['answered'] += 1;
+            questions_counter_numbers[option_div.ele.section]['not_answered'] -= 1;
+            option_div.ele.classList = [];
+            option_div.ele.classList.add('answered');
+
+            option_div.answered = true;
+        }
+
+
+        // {
+        //     'answered': 0,
+        //         'not_answered': 0,
+        //             'not_visited': questions.length,
+        //                 'marked': 0
+        // }
+    }
+
+    function clear_selection() {
+        document.getElementById("option1").style.backgroundColor = "White";
+        document.getElementById("option1").style.color = "Black";
+        document.getElementById("option1").style.fontWeight = "bold";
+        document.getElementById("option2").style.backgroundColor = "White";
+        document.getElementById("option2").style.color = "Black";
+        document.getElementById("option2").style.fontWeight = "bold";
+        document.getElementById("option3").style.backgroundColor = "White";
+        document.getElementById("option3").style.color = "Black";
+        document.getElementById("option3").style.fontWeight = "bold";
+        document.getElementById("option4").style.backgroundColor = "White";
+        document.getElementById("option4").style.color = "Black";
+        document.getElementById("option4").style.fontWeight = "bold";
+
+        if (this.ele.answered == true) {
+            questions_counter_numbers[this.ele.section]['answered'] -= 1;
+        }
+    }
+
+    for (var i of exam_sections) {
+        i.addEventListener('click', select_exam_section);
+        i.addEventListener('click', render_questions);
+    }
+
+    for (var i of document.getElementsByName("options")) {
+        i.addEventListener('click', select_answer);
+    }
+
+    document.getElementById("clear").addEventListener("click", clear_selection);
+
+
+
+    navigation_buttons = document.getElementsByClassName('navigation_button');
+
     for (var i of navigation_buttons) {
         console.log(i);
         i.addEventListener('mouseover', hover_transition);
         i.addEventListener('mouseout', hover_transition_out);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var questions = {
+        "1": {
+            "question": "If a train travels 600 km at a constant speed of 120 km/h, how many hours will it take to complete the journey?",
+            "option1": "4",
+            "option2": "5",
+            "option3": "6",
+            "option4": "7",
+            "correctAnswer": "option5"
+        },
+        "2": {
+            "question": "The sum of the interior angles of a polygon with 'n' sides is 1620 degrees. What is the value of 'n'?",
+            "option1": "8",
+            "option2": "9",
+            "option3": "10",
+            "option4": "11",
+            "correctAnswer": "option3"
+        },
+        "3": {
+            "question": "If the radius of a circle is increased by 20%, by what percentage does its area increase?",
+            "option1": "20%",
+            "option2": "44%",
+            "option3": "40%",
+            "option4": "42%",
+            "correctAnswer": "option4"
+        },
+        "4": {
+            "question": "A factory produces 4800 units of a product in 6 days. How many units will it produce in 12 days at the same rate?",
+            "option1": "9600",
+            "option2": "960",
+            "option3": "1920",
+            "option4": "480",
+            "correctAnswer": "option1"
+        },
+        "5": {
+            "question": "If log(base 3) x = 4, what is the value of x?",
+            "option1": "27",
+            "option2": "81",
+            "option3": "12",
+            "option4": "64",
+            "correctAnswer": "option2"
+        },
+        "6": {
+            "question": "The sum of the squares of two consecutive positive integers is 365. What are the two integers?",
+            "option1": "12, 13",
+            "option2": "13, 14",
+            "option3": "15, 16",
+            "option4": "16, 17",
+            "correctAnswer": "option1"
+        },
+        "7": {
+            "question": "If a man sells a shirt for $120, making a profit of 20%, what is the cost price of the shirt?",
+            "option1": "$100",
+            "option2": "$96",
+            "option3": "$90",
+            "option4": "$110",
+            "correctAnswer": "option2"
+        },
+        "8": {
+            "question": "If 3x + 5 = 14, what is the value of x?",
+            "option1": "3",
+            "option2": "4",
+            "option3": "5",
+            "option4": "6",
+            "correctAnswer": "option1"
+        },
+        "9": {
+            "question": "If the ratio of the ages of two people is 5:8 and the sum of their ages is 65 years, what is the age of the older person?",
+            "option1": "32 years",
+            "option2": "40 years",
+            "option3": "48 years",
+            "option4": "50 years",
+            "correctAnswer": "option3"
+        },
+        "10": {
+            "question": "A car covers a distance of 240 km in 4 hours. What is its average speed?",
+            "option1": "50 km/h",
+            "option2": "60 km/h",
+            "option3": "70 km/h",
+            "option4": "80 km/h",
+            "correctAnswer": "option2"
+        },
+        "11": {
+            "question": "If 5x - 3 = 12, what is the value of x?",
+            "option1": "3",
+            "option2": "5",
+            "option3": "6",
+            "option4": "9",
+            "correctAnswer": "option3"
+        },
+        "12": {
+            "question": "A container holds 8 liters of milk. If 2 liters of milk are poured out and replaced with water, what is the final milk-to-water ratio?",
+            "option1": "4:1",
+            "option2": "3:2",
+            "option3": "2:3",
+            "option4": "5:1",
+            "correctAnswer": "option2"
+        },
+        "13": {
+            "question": "If a number is increased by 25% and then decreased by 20%, what is the net percentage change?",
+            "option1": "5%",
+            "option2": "4%",
+            "option3": "3%",
+            "option4": "1%",
+            "correctAnswer": "option3"
+        },
+        "14": {
+            "question": "A man sells an item for $180, making a loss of 10%. What was the cost price of the item?",
+            "option1": "$200",
+            "option2": "$210",
+            "option3": "$220",
+            "option4": "$190",
+            "correctAnswer": "option2"
+        },
+        "15": {
+            "question": "If 2x + 3 = 11, what is the value of x?",
+            "option1": "3",
+            "option2": "4",
+            "option3": "5",
+            "option4": "6",
+            "correctAnswer": "option4"
+        },
+        "16": {
+            "question": "The average of five consecutive even numbers is 24. What is the largest of these numbers?",
+            "option1": "26",
+            "option2": "28",
+            "option3": "30",
+            "option4": "32",
+            "correctAnswer": "option3"
+        },
+        "17": {
+            "question": "A rectangular garden is 20 meters long and 15 meters wide. What is the area of the garden?",
+            "option1": "300 square meters",
+            "option2": "250 square meters",
+            "option3": "400 square meters",
+            "option4": "350 square meters",
+            "correctAnswer": "option1"
+        },
+        "18": {
+            "question": "If the sides of a triangle are in the ratio 3:4:5 and the perimeter is 72 cm, what is the length of the shortest side?",
+            "option1": "9 cm",
+            "option2": "12 cm",
+            "option3": "15 cm",
+            "option4": "18 cm",
+            "correctAnswer": "option1"
+        },
+        "19": {
+            "question": "If log(base 2) x = 6, what is the value of x?",
+            "option1": "8",
+            "option2": "16",
+            "option3": "32",
+            "option4": "64",
+            "correctAnswer": "option4"
+        },
+        "20": {
+            "question": "A train travels 480 km at a certain speed. If the speed is increased by 10 km/h, the same distance is covered in 4 hours less. What is the original speed of the train?",
+            "option1": "60 km/h",
+            "option2": "70 km/h",
+            "option3": "80 km/h",
+            "option4": "90 km/h",
+            "correctAnswer": "option2"
+        }
+    };
+
+
+
+    exam_sections[0].click();
+    var questions_counter_numbers = {}
+
+    for (let i of exam_sections) {
+        questions_counter_numbers[i.textContent] = {
+            'answered': 0,
+            'not_answered': 0,
+            'not_visited': questions.length,
+            'marked': 0
+        }
+    }
+
+    document.getElementById("1").click();
+
 
 </script>
 
