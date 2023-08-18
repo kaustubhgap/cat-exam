@@ -18,6 +18,8 @@
     integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
     crossorigin="anonymous"></script>
 
+<script src="script_ux.js"></script>
+
 <body>
     <div id="heading_static"> CAT MOCK TEST</div>
     <!-- <div class="container-fluid h-100">
@@ -31,17 +33,13 @@
     </div> -->
 
     <div class="topic_select">
-        <div class="tabs topic">Verbal Ability</div>
-        <div class="tabs topic topic_active">Quantitative Aptitude</div>
-        <div class="tabs topic">Logical Reasoning</div>
+        <div class="tabs topic" name="exam_section">Verbal Ability</div>
+        <div class="tabs topic topic_active" name="exam_section">Quantitative Aptitude</div>
+        <div class="tabs topic" name="exam_section">Logical Reasoning</div>
         <div class="tabs icon">
             <img src="calculator-solid.svg" , style="height:5vh; width:5vh;">
         </div>
         <div class="tabs icon"><img src="calculator-solid.svg" , style="height:5vh; width:5vh; margin:0px;"></div>
-    </div>
-
-    <div class>
-        <div>timer</div>
     </div>
 
     <div class="middle">
@@ -106,36 +104,96 @@
                 </div>
             </div>
 
-            <div class="question_access">
+            <div class="question_access" id="question_access">
                 <div class="current_question">1</div>
                 <div>2</div>
-                <div>3</div>
+                <div class="answered">3</div>
                 <div>4</div>
                 <div>5</div>
                 <div>6</div>
-                <div>7</div>
-                <div>8</div>
+                <div class="answered">7</div>
+                <div class="answered">8</div>
                 <div>9</div>
                 <div>10</div>
                 <div>11</div>
                 <div class="marked_review">12</div>
                 <div>1</div>
                 <div>2</div>
-                <div>3</div>
+                <div class="marked_review">3
+                    <span class="answered_flag">
+                    </span>
+                </div>
                 <div>4</div>
-                <div>5</div>
-                <div>6</div>
-                <div>7</div>
-                <div>8</div>
-                <div>9</div>
-                <div>10</div>
-                <div>11</div>
-                <div>12</div>
+                <div class="not_visited">5</div>
+                <div class="not_visited">6</div>
+                <div class="not_visited">7</div>
+                <div class="not_visited">8</div>
+                <div class="answered">9</div>
+                <div class="not_visited">10</div>
+                <div class="answered">11</div>
+                <div class="not_visited">12</div>
             </div>
 
         </div>
     </div>
 
 </body>
+
+<script>
+    exam_sections = document.getElementsByName('exam_section');
+
+    function select_exam_section(ele) {
+        for (var i of exam_sections) {
+            i.classList.remove('topic_active');
+        }
+        console.log(ele.srcElement.classList.add('topic_active'));
+    }
+
+    for (var i of exam_sections) {
+        i.addEventListener('click', select_exam_section);
+    }
+
+    question_buttons = document.getElementById('question_access').children;
+
+    function select_current_question(ele) {
+        for (var i of question_buttons) {
+            // i.primaryClass = i.classList;
+            i.classList = i.primaryClass;
+            i.classList.remove('current_question');
+        }
+        ele.srcElement.classList = [];
+        console.log(ele.srcElement.classList.add('current_question'));
+    }
+
+    for (var i of question_buttons) {
+        i.primaryClass = [...i.classList];
+        i.addEventListener('click', select_current_question);
+    }
+
+
+    navigation_buttons = document.getElementsByClassName('navigation_button');
+
+    function hover_transition(ele) {
+        console.log(ele);
+        let element = ele.srcElement;
+        let color = window.getComputedStyle(element).getPropertyValue('border-color');
+        console.log(color);
+        element.style.setProperty('background-color', color);
+        console.log(element);
+    }
+
+    function hover_transition_out(ele) {
+        let element = ele.srcElement;
+        // let color = element.style.borderColor;
+        element.style.backgroundColor = "White";
+    }
+
+    for (var i of navigation_buttons) {
+        console.log(i);
+        i.addEventListener('mouseover', hover_transition);
+        i.addEventListener('mouseout', hover_transition_out);
+    }
+
+</script>
 
 </html>
