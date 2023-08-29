@@ -31,20 +31,51 @@
         <div class="col-1">cal</div>
 
     </div> -->
+    <div id="calculator">
+        <div id="calcTop" style="background-color:#8EB095"></div>
+        <div id="calcBody">
+            <div id="branding">
+                <div style="color:white;margin-left:10px; display: inline; cursor:pointer;" id="close_calc">X</div>
+            </div>
+            <div id="screen">
+                <p>0</p>
+            </div>
+            <div id="buttonPad">
+                <button id="bca">CA</button>
+                <button id="b7">7</button>
+                <button id="b4">4</button>
+                <button id="b1">1</button>
+                <button id="b0">0</button>
+                <button id="bce">CE</button>
+                <button id="b8">8</button>
+                <button id="b5">5</button>
+                <button id="b2">2</button>
+                <button id="bdecimal">.</button>
+                <button id="bpercent">%</button>
+                <button id="b9">9</button>
+                <button id="b6">6</button>
+                <button id="b3">3</button>
+                <button id="bequals">=</button>
+                <button id="bdivide">/</button>
+                <button id="btimes">x</button>
+                <button id="bminus">-</button>
+                <button id="bplus">+</button>
+            </div>
+        </div>
+        <div id="calcBottom"></div>
+    </div>
 
     <div class="topic_select">
         <div class="tabs topic" name="exam_section">Verbal Ability</div>
         <div class="tabs topic topic_active" name="exam_section">Quantitative Aptitude</div>
         <div class="tabs topic" name="exam_section">Logical Reasoning</div>
-        <div class="tabs icon">
-            <img src="calculator-solid.svg" , style="height:5vh; width:5vh;">
-        </div>
-        <div class="tabs icon"><img src="calculator-solid.svg" , style="height:5vh; width:5vh; margin:0px;"></div>
+        <div class="tabs icon" id="pop_calc"><img src="calculator-solid.svg" ,
+                style="height:5vh; width:5vh; margin:0px;"></div>
     </div>
 
     <div class="middle">
         <div class="small_question">
-            <div class="question_area">fakjsdhkjf</div>
+            <div class="question_area" id="question_statement">fakjsdhkjf</div>
             <div class="answer_area">
                 <div class="options" name="options" id="option1">
                     <!-- <div> -->
@@ -80,7 +111,8 @@
             <div class="question_counter">
                 <div class="counter">
                     <div class="number" id="answered"
-                        style="background-color:green; border:2px solid darkolivegreen; text-align: center; vertical-align: middle; line-height: 4.3vh;"">12</div>
+                        style="background-color:green; border:2px solid darkolivegreen; text-align: center; vertical-align: middle; line-height: 4.3vh;">
+                        12</div>
                     <div style=" top:1.8vh; left:6vh; text-align: left; font-weight:bold;">Answered</div>
                 </div>
                 <div class="counter">
@@ -142,79 +174,144 @@
 
 <script>
 
-
-
     exam_sections = document.getElementsByName('exam_section');
     var current_answered = false;
+    var section = null;
+
+    var questions_counter_numbers = {};
+    var responses = {
+        "Verbal Ability": {},
+        "Quantitative Ability": {},
+        "Logical Reasoning": {}
+    };
+
+    var final_response_counter = {};
+
+    for (let i of exam_sections) {
+        questions_counter_numbers[i.textContent] = {
+            'answered': 0,
+            'not_answered': 0,
+            'not_visited': 20,
+            'marked': 0,
+            'visited': 0,
+        };
+    };
+
+
+    var current_active_question_div;
 
     function select_exam_section(ele) {
+        final_response_counter[section] = questions_counter_numbers[section];
         for (var i of exam_sections) {
             i.classList.remove('topic_active');
         }
-        console.log(ele.srcElement.classList.add('topic_active'));
+        ele.srcElement.classList.add('topic_active');
+        section = ele.srcElement.innerHTML;
     }
 
     function hover_transition(ele) {
-        console.log(ele);
         let element = ele.srcElement;
         let color = window.getComputedStyle(element).getPropertyValue('border-color');
-        console.log(color);
         element.style.setProperty('background-color', color);
-        console.log(element);
     }
 
     function hover_transition_out(ele) {
         let element = ele.srcElement;
-        // let color = element.style.borderColor;
         element.style.backgroundColor = "White";
     }
 
 
     function select_current_question(ele) {
+        current_active_question_div = this;
         for (var i of document.getElementById("question_access").children) {
-            // i.primaryClass = i.classList;
-            i.classList = i.primaryClass;
-            i.classList.remove('current_question');
+            // console.log(i, i.answered);
+            i.classList = [];
+            if (i.visited == true) {
+                if (i.marked == true) {
+                    i.classList.add("marked_review");
+                    if (i.answered == true) {
+                        i.children[0].style.display = "inline";
+                    }
+                    else {
+                        i.children[0].style.display = "none";
+                    }
+                }
+                else if (i.answered == true) {
+                    i.classList.add("answered");
+                    i.children[0].style.display = "none";
+                }
+                else {
+                    i.classList.add("not_answered");
+                }
+            }
         }
-        ele.srcElement.classList = [];
-        console.log(ele.srcElement.classList.add('current_question'));
-        if (ele.srcElement.answered == false) {
-            ele.srcElement.primaryClass = ['not_answered'];
+
+
+        if (current_active_question_div.visited == false) {
+            questions_counter_numbers[section]["visited"] += 1;
+            questions_counter_numbers[section]["not_visited"] -= 1;
         }
-        else {
-            ele.srcElement.primaryClass = [ele.srcElement.classList];
-        }
-        console.log(ele.srcElement);
+
+
+        x = questions_counter_numbers[section]['visited'];
+        y = questions_counter_numbers[section]['answered'];
+        questions_counter_numbers[section]["not_answered"] = x - y;
+
+        display_progress();
+
+        current_active_question_div.visited = true;
+        current_active_question_div.classList = [];
+        question_marker[section][current_active_question_div.id].visited = true;
+        current_active_question_div.classList.add("current_question");
+
     }
 
 
     function render_questions(ele) {
         let section_name = ele.srcElement.textContent;
-        console.log(section_name);
-        let questions_section = questions;
+        section = section_name;
+        let questions_section = questions[section_name];
+
         var question_navigator = document.getElementById("question_access");
         question_navigator.innerHTML = "";
-        console.log(question_navigator);
+        let marker = question_marker[section_name];
+
         for (let i of Object.keys(questions_section)) {
             let question_box_navigator = document.createElement('div');
             question_box_navigator.setAttribute("id", i);
             question_box_navigator.section = section_name;
-            question_box_navigator.visited = false;
-            question_box_navigator.marked = false;
-            question_box_navigator.answered = false;
+            question_box_navigator.visited = marker[i]["visited"];
+            question_box_navigator.marked = marker[i]["marked"];
+            question_box_navigator.answered = marker[i]["answered"];
+            question_box_navigator.answer = marker[i]["answer"];
             question_box_navigator.addEventListener("click", select_current_question);
             question_box_navigator.addEventListener("click", display_question);
             question_box_navigator.innerHTML = i;
+            let node = document.createElement('span');
+            node.classList.add('answered_flag');
+            if (question_box_navigator.answered == true) {
+                node.style.display = 'inline';
+            }
+            else {
+                node.style.display = 'none';
+            }
+            question_box_navigator.appendChild(node);
+
             question_navigator.appendChild(question_box_navigator);
         }
+
+        document.getElementById("1").click();
     }
 
 
     function display_question(ele) {
         question_number = ele.srcElement.getAttribute("id");
-        console.log(question_number);
-        console.log(questions[question_number]);
-        question = questions[question_number];
+
+        document.getElementById("close_calc").click();
+
+        question = questions[section][question_number];
+        document.getElementById("question_statement").innerHTML = question["question"];
+        document.getElementById("question_statement").style.fontWeight = "bold";
         document.getElementById("option1").innerHTML = "A) " + question["option1"];
         document.getElementById("option1").style.backgroundColor = "White";
         document.getElementById("option1").style.color = "Black";
@@ -241,41 +338,88 @@
         document.getElementById("previous").ele = ele.srcElement;
         document.getElementById("review").ele = ele.srcElement;
 
-        if (ele.srcElement.visited == false) {
-            questions_counter_numbers[ele.srcElement.section]['not_visited'] -= 1;
-            questions_counter_numbers[ele.srcElement.section]['not_answered'] += 1;
+        if (current_active_question_div.answered == true) {
+            this.answer.click();
         }
 
+        if (current_active_question_div.marked == true) {
+            document.getElementById("review").innerHTML = "UnReview";
+        }
+        else {
+            document.getElementById("review").innerHTML = "Review";
+        }
 
+        if (Number(question_number) < document.getElementById("question_access").children.length) {
+            document.getElementById("next").addEventListener("click", click_next);
+            document.getElementById("next").addEventListener('mouseover', hover_transition);
+            document.getElementById("next").addEventListener('mouseout', hover_transition_out);
+            // style = "border: 2px solid green;"
+            let next_button = document.getElementById("next");
+            next_button.style.backgroundColor = "white";
+            next_button.style.border = "2px solid green";
+            next_button.style.cursor = "pointer";
+
+
+        }
+        else {
+            document.getElementById("next").removeEventListener('click', click_next);
+            document.getElementById("next").removeEventListener('mouseover', hover_transition);
+            document.getElementById("next").removeEventListener('mouseout', hover_transition_out);
+            let next_button = document.getElementById("next");
+            next_button.style.backgroundColor = "white";
+            next_button.style.border = "2px solid gray";
+            next_button.style.cursor = "not-allowed";
+        }
+
+        if (Number(question_number) > 1) {
+            document.getElementById("previous").addEventListener("click", click_previous);
+            document.getElementById("previous").addEventListener('mouseover', hover_transition);
+            document.getElementById("previous").addEventListener('mouseout', hover_transition_out);
+            // border: 2px solid brown;
+            let prev_button = document.getElementById("previous");
+            prev_button.style.backgroundColor = "white";
+            prev_button.style.border = "2px solid brown";
+            prev_button.style.cursor = "pointer";
+
+
+        }
+        else {
+            document.getElementById("previous").removeEventListener('click', click_previous);
+            document.getElementById("previous").removeEventListener('mouseover', hover_transition);
+            document.getElementById("previous").removeEventListener('mouseout', hover_transition_out);
+            let prev_button = document.getElementById("previous");
+            prev_button.style.backgroundColor = "white";
+            prev_button.style.border = "2px solid gray";
+            prev_button.style.cursor = "not-allowed";
+        }
     }
+
 
     function select_answer(ele) {
         let option_div = ele.target;
-        console.log(option_div.ele);
+
         for (let i of document.getElementsByName("options")) {
             i.style.backgroundColor = "White";
             i.style.color = "Black";
         }
         option_div.style.backgroundColor = "Green";
         option_div.style.color = "White";
-        if (option_div.ele.answered == false) {
-            console.log("here");
-            questions_counter_numbers[option_div.ele.section]['answered'] += 1;
-            questions_counter_numbers[option_div.ele.section]['not_answered'] -= 1;
-            option_div.ele.classList = [];
-            option_div.ele.classList.add('answered');
 
-            option_div.answered = true;
+        if (current_active_question_div.answered == false) {
+            questions_counter_numbers[section]["answered"] += 1;
+
+            x = questions_counter_numbers[section]['visited'];
+            y = questions_counter_numbers[section]['answered'];
+            questions_counter_numbers[section]["not_answered"] = x - y;
         }
 
-
-        // {
-        //     'answered': 0,
-        //         'not_answered': 0,
-        //             'not_visited': questions.length,
-        //                 'marked': 0
-        // }
+        current_active_question_div.answered = true;
+        current_active_question_div.answer = option_div;
+        question_marker[section][current_active_question_div.id].answered = true;
+        question_marker[section][current_active_question_div.id].answer = option_div;
+        display_progress();
     }
+
 
     function clear_selection() {
         document.getElementById("option1").style.backgroundColor = "White";
@@ -291,10 +435,75 @@
         document.getElementById("option4").style.color = "Black";
         document.getElementById("option4").style.fontWeight = "bold";
 
-        if (this.ele.answered == true) {
-            questions_counter_numbers[this.ele.section]['answered'] -= 1;
+
+        if (current_active_question_div.answered == true) {
+            questions_counter_numbers[section]["answered"] -= 1;
+            questions_counter_numbers[section]["not_answered"] += 1;
+        }
+
+        current_active_question_div.answered = false;
+        current_active_question_div.answer = null;
+        question_marker[section][current_active_question_div.id].answered = false;
+        question_marker[section][current_active_question_div.id].answer = null;
+
+
+        display_progress();
+    }
+
+    function mark_review() {
+
+        if (current_active_question_div.marked == true) {
+            current_active_question_div.marked = false;
+            question_marker[section][current_active_question_div.id].marked = false;
+            this.innerHTML = "Review";
+            questions_counter_numbers[section]["marked"] -= 1
+        }
+        else {
+            current_active_question_div.marked = true;
+            question_marker[section][current_active_question_div.id].marked = true;
+            this.innerHTML = "UnReview";
+            questions_counter_numbers[section]["marked"] += 1;
+
+        }
+
+        display_progress();
+    }
+
+
+    function display_progress() {
+        document.getElementById('answered').innerHTML = questions_counter_numbers[section]["answered"];
+        document.getElementById('marked').innerHTML = questions_counter_numbers[section]["marked"];
+        document.getElementById('not_answered').innerHTML = questions_counter_numbers[section]["not_answered"];
+        document.getElementById('not_visited').innerHTML = questions_counter_numbers[section]["not_visited"];
+    }
+
+    function click_next() {
+        let curr_question = Number(current_active_question_div.textContent);
+        // console.log(curr_question);
+        if (curr_question < document.getElementById("question_access").children.length) {
+            current_active_question_div = document.getElementById(String(curr_question + 1))
+            current_active_question_div.click()
+        }
+
+    }
+
+    function click_previous() {
+        let curr_question = Number(current_active_question_div.textContent);
+        // console.log(curr_question);
+        if (curr_question > 1) {
+            current_active_question_div = document.getElementById(String(curr_question - 1))
+            current_active_question_div.click()
         }
     }
+
+    function show_calc() {
+        document.getElementById("calculator").style.display = "block";
+    }
+
+    function close_calc() {
+        document.getElementById("calculator").style.display = "none";
+    }
+
 
     for (var i of exam_sections) {
         i.addEventListener('click', select_exam_section);
@@ -306,20 +515,119 @@
     }
 
     document.getElementById("clear").addEventListener("click", clear_selection);
+    document.getElementById("review").addEventListener("click", mark_review);
 
 
 
     navigation_buttons = document.getElementsByClassName('navigation_button');
 
     for (var i of navigation_buttons) {
-        console.log(i);
         i.addEventListener('mouseover', hover_transition);
         i.addEventListener('mouseout', hover_transition_out);
     }
 
+    document.getElementById("pop_calc").addEventListener("click", show_calc);
+    document.getElementById("close_calc").addEventListener("click", close_calc);
 
 
 
+    $(document).ready(function () {
+
+        var currentNum = '';
+        var total = 0;
+        var operation = '';
+        console.log(typeof (total));
+
+        function updateDisplay(disp) {
+            console.log('Display updating: ' + disp);
+            $('p').text(disp);
+        }
+
+        function opPush(op) {
+            console.log('Operand pushed');
+            if (op === 'percent') {
+                var currentNumInt = Number(currentNum);
+                currentNumInt = currentNumInt / 100;
+                currentNum = currentNumInt;
+                updateDisplay(currentNumInt);
+            } else {
+                console.log('else run');
+                if (op !== 'ce') {
+                    var currentNumInt = Number(currentNum);
+                    if (currentNumInt) {
+                        switch (operation) {
+                            case '':
+                                total = currentNumInt;
+                                break;
+                            case 'divide':
+                                total = total / currentNumInt;
+                                break;
+                            case 'times':
+                                total = total * currentNumInt;
+                                break;
+                            case 'minus':
+                                total = total - currentNumInt;
+                                break;
+                            case 'plus':
+                                total = total + currentNumInt;
+                                break;
+                            case 'equals':
+                                break;
+                        }
+                    }
+                    if (op === 'ca') {
+                        console.log('CA');
+                        total = 0;
+                        op = '';
+                    }
+                    console.log('Total = ' + total);
+                    operation = op;
+                }
+                updateDisplay(total);
+                currentNum = '';
+            }
+        }
+
+        function numPush(num) {
+            console.log('Number pushed: ' + num);
+            currentNum += num;
+            if (currentNum === '.') {
+                currentNum = '0.';
+            }
+            updateDisplay(currentNum);
+        }
+
+        function buttonPush(btn) {
+            console.log('btn = ' + btn);
+            if (btn === 'decimal') {
+                numPush('.');
+            } else if (isNaN(btn)) {
+                opPush(btn);
+            } else {
+                numPush(btn);
+            }
+        }
+
+        // superfluous?
+        function updateTotal(op, num) {
+        }
+
+
+        $('button').click(function () {
+            var btn = $(this).attr("id");
+            console.log('Button pushed: ' + btn);
+            buttonPush(btn.slice(1));
+        });
+
+        // SHIFT DOESNT CHANGE CHARACTER CODES ??? //
+        /*document.addEventListener('keydown', function(event) {
+          var keyPress = event.keyCode;
+          console.log('Key pressed: '+keyPress);
+          var keyChar = String.fromCharCode(keyPress);
+          console.log('Key Char: '+keyChar);
+          buttonPush(keyChar);
+        });*/
+    })
 
 
 
@@ -524,21 +832,28 @@
         }
     };
 
+    question_marker = {};
+    for (let i of ['Verbal Ability', 'Logical Reasoning', 'Quantitative Aptitude']) {
+        question_marker[String(i)] = {};
+        for (j = 1; j <= 20; j++) {
 
+            question_marker[String(i)][String(j)] = {};
+            question_marker[String(i)][String(j)]['answered'] = false;
+            question_marker[String(i)][String(j)]['marked'] = false;
+            question_marker[String(i)][String(j)]['visited'] = false;
+            question_marker[String(i)][String(j)]['answer'] = null;
+        };
+    };
+
+    questions = {
+        'Verbal Ability': questions,
+        'Logical Reasoning': questions,
+        'Quantitative Aptitude': questions
+    };
 
     exam_sections[0].click();
-    var questions_counter_numbers = {}
 
-    for (let i of exam_sections) {
-        questions_counter_numbers[i.textContent] = {
-            'answered': 0,
-            'not_answered': 0,
-            'not_visited': questions.length,
-            'marked': 0
-        }
-    }
 
-    document.getElementById("1").click();
 
 
 </script>
